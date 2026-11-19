@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.example.demo.entity.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,7 +15,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "conversations")
-public class Conversation {
+public class Conversation extends BaseEntity {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;

@@ -3,7 +3,10 @@ package com.example.demo.service;
 import com.example.demo.dto.request.UserCreationRequest;
 import com.example.demo.dto.request.UserUpdateRequest;
 import com.example.demo.entity.User;
+import com.example.demo.exception.CustomException;
+import com.example.demo.exception.ErrorCode;
 import com.example.demo.repository.UserRepository;
+import liquibase.exception.CustomChangeException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +17,7 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    public User createUser(UserCreationRequest request) {
+    public User createUser(UserCreationRequest request){
         var user = User.builder()
                 .username(request.getUsername())
                 .password(request.getPassword())
@@ -24,7 +27,7 @@ public class UserService {
                 .urlAvt(request.getUrlAvt())
                 .dob(request.getDob()).build();
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username is already in use");
+            throw new CustomException(ErrorCode.USER_EXISTED);
         }
         return userRepository.save(user);
     }

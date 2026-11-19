@@ -18,11 +18,5 @@ public abstract class AuditableEntity extends BaseEntity {
     @Column(updatable = false)
     private Long createdBy;
 
-    @LastModifiedBy
-    private Long updatedBy;
-
     private LocalDateTime deletedAt;
-
-
-    private Long deletedBy;
 }
