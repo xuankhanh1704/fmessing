@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.request.UserCreationRequest;
+import com.example.demo.dto.request.UserUpdateRequest;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -15,8 +18,29 @@ public class UserController {
     }
 
     @PostMapping("/users/create")
-    User createUser(@RequestBody UserCreationRequest request) {
+    User createUser(@RequestBody @Valid UserCreationRequest request) {
         return userService.createUser(request);
 
+    }
+
+    @GetMapping("/users/listUser")
+    List<User> getListUser() {
+        return userService.getListUsers();
+    }
+
+    @GetMapping("/users/{userId}")
+    User getUser(@PathVariable("userId") Long userId) {
+        return userService.getUserByUserId(userId);
+    }
+
+    @PutMapping("/users/{userId}")
+    User updateUser(@PathVariable("userId") Long userId, @RequestBody UserUpdateRequest request) {
+        return userService.updateUserById(userId, request);
+    }
+
+    @DeleteMapping("users/{userId}")
+    ResponseEntity<Void> deleteUser(@PathVariable("userId") Long userId) {
+        userService.deleteUserById(userId);
+        return ResponseEntity.noContent().build();
     }
 }
